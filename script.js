@@ -45,8 +45,8 @@ btn.addEventListener('click', function (e) {
     const username = uname.value.trim();
     const password = pass.value.trim();
 
-    const validUsername = "ryoma";
-    const validPassword = "dafa123";
+    const validUsername = "apayy";
+    const validPassword = "apayipay";
 
     if (username === validUsername && password === validPassword) {
         msg.innerText = 'Login successful!'; // Pesan sukses
