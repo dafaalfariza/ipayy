@@ -1,0 +1,146 @@
+/* ===========================
+   Reset & Basic Styling
+=========================== */
+
+/* ===========================
+   Toggle Button Styling
+=========================== */
+.menu-toggle {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 1em;           /* Memperbesar area klik */
+  z-index: 2000;          /* Supaya selalu di atas sidebar */
+}
+
+.menu-toggle:focus {
+  outline: none;
+}
+
+/* Hamburger bars */
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+  content: '';
+  display: block;
+  background: #333;
+  height: 4px;
+  width: 28px;
+  border-radius: 2px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Posisi bar atas */
+.hamburger::before {
+  position: absolute;
+  top: -9px;
+}
+
+/* Posisi bar bawah */
+.hamburger::after {
+  position: absolute;
+  top: 9px;
+}
+
+/* Toggle open state: hilangkan bar tengah */
+.menu-toggle.open .hamburger {
+  background: transparent;
+}
+
+/* Rotate bar atas */
+.menu-toggle.open .hamburger::before {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+/* Rotate bar bawah */
+.menu-toggle.open .hamburger::after {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ===========================
+   Sidebar Navigation Styling
+=========================== */
+
+/* Sidebar container */
+.nav-list {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 16em;
+  height: 100vh;
+  background: #ffffff;
+  padding-top: 4.5em;
+  padding-right: 1em;       /* Ruang ekstra kanan supaya glow tidak terpotong */
+  display: flex;
+  flex-direction: column;
+  border-top-right-radius: 1em;
+  border-bottom-right-radius: 1em;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+
+  overflow: visible;        /* Penting supaya box-shadow link keluar */
+}
+
+/* Sidebar tersembunyi */
+.hidden {
+  transform: translateX(-100%);
+}
+
+/* ===========================
+   Sidebar Links Styling
+=========================== */
+
+.nav-list a {
+  position: relative;       /* Untuk positioning ::after */
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 1em 1.5em;
+  background: transparent;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid #eee;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s ease;
+  will-change: transform, color;
+}
+
+/* Hapus border bawah pada link terakhir */
+.nav-list a:last-child {
+  border-bottom: none;
+}
+
+/* Hover effect: naik dan ubah warna */
+.nav-list a:hover {
+  transform: translateY(-6px) scale(1.05);
+  color: #007bff;
+  cursor: pointer;
+}
+
+/* Efek glow dengan pseudo-element ::after */
+.nav-list a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: -6px;             /* Glow keluar sedikit ke kanan, tidak berlebihan */
+  top: 50%;
+  transform: translateY(-50%);
+  height: 38px;             /* Sedikit lebih kecil agar pas */
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;     /* Supaya tidak mengganggu klik */
+  border-radius: 4px;
+  z-index: -1;              /* Di belakang teks dan border */
+}
+
+/* Tampilkan glow saat hover */
+.nav-list a:hover::after {
+  opacity: 1;
+}

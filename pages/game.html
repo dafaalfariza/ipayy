@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Game Hub - Pilih Game Favoritmu</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
+  :root {
+    --color-bg-dark: #0a0a0a;
+    --color-neon-blue: #00aaff;
+    --color-text-light: #e0e6f1;
+    --color-primary: #e0e6f1;
+    --color-accent: #00aaff;
+    --color-accent-hover: #0091dd;
+    --radius: 0.75rem;
+    --shadow: 0 4px 16px rgba(0,170,255,0.3);
+    --font-family: 'Poppins', sans-serif;
+    --transition: 0.3s ease;
+    --max-width: 1200px;
+  }
+
+  /* Reset */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  /* Efek scroll smooth */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-light);
+    font-family: var(--font-family);
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background:
+      radial-gradient(circle at center, rgba(0,170,255,0.15) 0%, transparent 70%),
+      linear-gradient(135deg, #001020, #000a14);
+  }
+
+  /* Neon glow under effect */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 50%; left: 50%;
+    width: 180vw;
+    height: 180vh;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at center, var(--color-neon-blue) 20%, transparent 80%);
+    filter: blur(150px);
+    transform: translate(-50%, -50%);
+    z-index: 0;
+  }
+
+  /* Animasi Awal */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Animasi Scroll */
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Class untuk animasi */
+  .animate-on-scroll {
+    opacity: 0;
+    transition: all 0.8s ease-out;
+  }
+
+  .animate-on-scroll.animated {
+    opacity: 1;
+  }
+
+  .slide-left {
+    transform: translateX(-50px);
+  }
+
+  .slide-right {
+    transform: translateX(50px);
+  }
+
+  .animated.slide-left, .animated.slide-right {
+    transform: translateX(0);
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    background: rgba(10, 10, 10, 0.9);
+    border-bottom: 1px solid rgba(0,170,255,0.3);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    animation: fadeInUp 1s ease-out;
+    backdrop-filter: blur(5px);
+  }
+
+  .logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--color-neon-blue);
+    user-select: none;
+    cursor: default;
+    text-shadow:
+      0 0 5px var(--color-neon-blue),
+      0 0 12px var(--color-neon-blue);
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: var(--color-text-light);
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color var(--transition);
+    text-shadow: 0 0 6px rgba(0,170,255,0.7);
+    position: relative;
+    padding: 0.5rem 0;
+  }
+
+  /* Efek underline animasi */
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    transition: width var(--transition);
+  }
+
+  nav a:hover::after,
+  nav a:focus-visible::after {
+    width: 100%;
+  }
+
+  nav a:hover,
+  nav a:focus-visible {
+    color: var(--color-accent);
+    outline: none;
+    text-shadow:
+      0 0 10px var(--color-accent);
+  }
+
+  /* Style untuk section target */
+  section:target {
+    padding-top: 80px;
+    margin-top: -80px;
+  }
+
+  main {
+    max-width: var(--max-width);
+    margin: 3rem auto 6rem;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero {
+    text-align: center;
+    padding-bottom: 3rem;
+    color: var(--color-text-light);
+    text-shadow:
+      0 0 6px var(--color-neon-blue);
+    animation: fadeInUp 1s ease-out 0.2s forwards;
+    opacity: 0;
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--color-neon-blue);
+    margin: 0 0 0.5rem;
+    user-select: none;
+    text-shadow:
+      0 0 10px var(--color-neon-blue), 
+      0 0 30px var(--color-neon-blue);
+  }
+
+  .hero p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0.85;
+  }
+
+  /* MODIFIKASI UTAMA: Grid 2 kolom */
+  .game-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+
+  /* Responsive: 1 kolom di mobile */
+  @media (max-width: 768px) {
+    .game-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .game-card {
+    background: rgba(0,0,0,0.6);
+    border-radius: var(--radius);
+    box-shadow:
+      0 0 10px var(--color-neon-blue),
+      0 8px 24px rgba(0,170,255,0.3);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      box-shadow var(--transition),
+      transform var(--transition),
+      background-color var(--transition);
+    color: var(--color-text-light);
+    opacity: 0;
+  }
+  .game-card:nth-child(odd) {
+    transform: translateX(-50px);
+  }
+  .game-card:nth-child(even) {
+    transform: translateX(50px);
+  }
+  .game-card.animated {
+    opacity: 1;
+    transform: translateX(0) !important;
+  }
+  .game-card:hover,
+  .game-card:focus-visible {
+    box-shadow:
+      0 0 18px var(--color-neon-blue),
+      0 12px 34px oklab(70.72% -0.07872 -0.14845 / 0.8);
+    transform: translateY(-8px);
+    outline: none;
+    background: rgba(0,0,0,0.85);
+  }
+
+  .game-card h2 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin: 0;
+    color: var(--color-accent);
+    text-shadow: 0 0 10px var(--color-neon-blue);
+  }
+
+  .game-card p {
+    font-size: 1rem;
+    flex-grow: 1;
+    color: var(--color-text-light);
+    user-select: text;
+  }
+
+  .play-button {
+    align-self: flex-start;
+    margin-top: auto;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--color-accent);
+    color: #000;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow:
+      0 0 12px #00aaff;
+    transition: background-color var(--transition), box-shadow var(--transition);
+  }
+
+  .play-button:hover,
+  .play-button:focus-visible {
+    background-color: #0091dd;
+    box-shadow:
+      0 0 25px #00c2ff;
+    outline: none;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    padding: 1rem 2rem;
+    user-select: none;
+    text-shadow: 0 0 6px var(--color-neon-blue);
+    opacity: 0;
+    animation: fadeInUp 1s ease-out 0.4s forwards;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo" tabindex="0">ApayGame</div>
+  <nav aria-label="Main navigation">
+    <ul>
+      <li><a href="main.html">Home</a></li>
+      <li><a href="#games">Game</a></li>
+      <li><a href="#about">Tentang</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero" id="hero" role="banner">
+  <h1>Selamat Datang di ApayGame</h1>
+  <p>Pilih dan mainkan berbagai game menarik yang sudah kami sediakan dengan sentuhan neon biru yang keren.</p>
+</section>
+
+<section id="games" aria-label="Daftar game">
+  <div class="game-grid">
+
+    <article class="game-card" tabindex="0" role="button" aria-pressed="false" onclick="goToGame('truthordare.html')" onkeypress="if(event.key==='Enter'){goToGame('truthordare.html')}">
+      <h2>Truth or Dare</h2>
+      <p>Bayangkan segalanya menjadi lebih seru dengan tantangan jujur atau berani. Mainkan dan temukan jawabannya!</p>
+      <button class="play-button" type="button" onclick="event.stopPropagation(); goToGame('truthordare.html')">Mainkan</button>
+    </article>
+
+    <article class="game-card" tabindex="0" role="button" aria-pressed="false" onclick="goToGame('catchballon.html')" onkeypress="if(event.key==='Enter'){goToGame('catchballon.html')}">
+      <h2>Birthday Catch</h2>
+      <p>Tangkap balon ulang tahun sebanyak-banyaknya sebelum waktu habis. Keseruan yang pas untuk pesta ulang tahun!</p>
+      <button class="play-button" type="button" onclick="event.stopPropagation(); goToGame('catchballon.html')">Mainkan</button>
+    </article>
+
+    <article class="game-card" tabindex="0" role="button" aria-pressed="false" onclick="goToGame('quiz.html')" onkeypress="if(event.key==='Enter'){goToGame('quiz.html')}">
+      <h2>Quiz</h2>
+      <p>Quiz ini terdiri dari 10 level, jawablah dengan tepat!</p>
+      <button class="play-button" type="button" onclick="event.stopPropagation(); goToGame('quiz.html')">Mainkan</button>
+    </article>
+
+  </div>
+</section>
+
+<section id="about" aria-label="Tentang aplikasi" style="margin-top: 6rem; text-align:center; color: var(--color-text-light); user-select:none; text-shadow: 0 0 6px var(--color-neon-blue);" class="animate-on-scroll">
+  <p>© <span id="year"></span> ApayGame – Tempat seru kumpulan game favoritmu.</p>
+</section>
+
+</main>
+
+<script>
+  // Set current year automatically
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  function goToGame(url) {
+    window.location.href = url;
+  }
+
+  // Animasi saat scroll
+  document.addEventListener('DOMContentLoaded', function() {
+    const gameCards = document.querySelectorAll('.game-card');
+    const aboutSection = document.querySelector('#about');
+    
+    function isInViewport(element) {
+      const rect = element.getBoundingClientRect();
+      return (
+        rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.75 &&
+        rect.bottom >= 0
+      );
+    }
+    
+    function handleScrollAnimations() {
+      gameCards.forEach((card, index) => {
+        if (isInViewport(card)) {
+          card.style.transitionDelay = `${index * 0.1}s`;
+          card.classList.add('animated');
+        }
+      });
+      
+      if (isInViewport(aboutSection)) {
+        aboutSection.classList.add('animated');
+      }
+    }
+    
+    // Trigger awal
+    handleScrollAnimations();
+    
+    // Event listener untuk scroll
+    window.addEventListener('scroll', handleScrollAnimations);
+
+    // Efek smooth scroll untuk anchor link (tanpa mengganggu link ke halaman lain seperti main.html)
+    document.querySelectorAll('nav a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+
+        if (targetId.startsWith('#')) {
+          e.preventDefault();
+
+          const targetElement = document.querySelector(targetId);
+
+          if (targetElement) {
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const targetPosition = targetElement.offsetTop - headerHeight;
+
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+
+            history.pushState(null, null, targetId);
+          }
+        }
+      });
+    });
+  });
+</script>
+
+
+</body>
+</html>

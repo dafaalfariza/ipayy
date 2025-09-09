@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Permainan Truth or Dare Romantis</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+  :root {
+    --color-bg: #ffffff;
+    --color-text: #6b7280;
+    --color-primary: #1a1a1a;
+    --color-accent: #d6336c;
+    --color-accent-light: #fce4ec;
+    --radius: 0.75rem;
+    --shadow: 0 8px 24px rgba(214, 51, 108, 0.2);
+    --font-family: 'Poppins', sans-serif;
+    --transition: 0.3s ease;
+    --max-width: 720px;
+
+    --button-padding: 1rem 1.5rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 3rem;
+  }
+
+  /* Reset */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #fce4ec 0%, #ffd6e8 100%);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1rem 4rem;
+  }
+
+  main {
+    width: 100%;
+    max-width: var(--max-width);
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 3rem 4rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: var(--font-size-xl);
+    color: var(--color-primary);
+    margin: 0 0 0.25rem 0;
+    letter-spacing: -0.03em;
+    user-select: none;
+    text-align: center;
+    text-shadow:
+      0 2px 8px rgba(214, 51, 108, 0.25);
+  }
+
+  p.subtitle {
+    font-weight: 600;
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
+    margin: 0;
+    opacity: 0.9;
+    text-align: center;
+    max-width: 18rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  button {
+    flex: 1 1 45%;
+    padding: var(--button-padding);
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    border-radius: var(--radius);
+    border: 2px solid var(--color-accent);
+    background-color: var(--color-accent);
+    color: white;
+    cursor: pointer;
+    box-shadow:
+      0 6px 16px rgba(214, 51, 108, 0.3);
+    transition:
+      background-color var(--transition),
+      border-color var(--transition),
+      color var(--transition),
+      box-shadow var(--transition),
+      transform var(--transition);
+    user-select: none;
+    text-align: center;
+  }
+
+  button:hover, button:focus-visible {
+    background-color: #f8bbd0;
+    color: var(--color-accent);
+    border-color: #f48fb1;
+    box-shadow:
+      0 12px 28px rgba(214, 51, 108, 0.5);
+    outline: none;
+    transform: translateY(-3px);
+  }
+
+  button.secondary {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+    border-color: var(--color-accent-light);
+    box-shadow: 0 0 0 transparent;
+  }
+
+  button.secondary:hover, button.secondary:focus-visible {
+    background-color: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+    box-shadow:
+      0 8px 20px rgba(214, 51, 108, 0.5);
+  }
+
+  .question-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .question-text {
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    color: var(--color-primary);
+    user-select: none;
+    padding-left: 0.75rem;
+    border-left: 6px solid var(--color-accent);
+    text-shadow:
+      0 1px 4px rgba(214, 51, 108, 0.3);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 110px;
+    padding: 1rem 1.25rem;
+    font-size: var(--font-size-base);
+    border-radius: var(--radius);
+    border: 2px solid #f8bbd0;
+    font-family: var(--font-family);
+    color: var(--color-primary);
+    background: #fff0f6;
+    box-shadow:
+      inset 0 2px 6px rgba(214, 51, 108, 0.07);
+    transition:
+      border-color var(--transition),
+      box-shadow var(--transition);
+  }
+
+  textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow:
+      0 0 10px rgba(214, 51, 108, 0.4);
+    background: #fff0f6;
+  }
+
+  .answer-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  .answer-buttons button {
+    flex: none;
+    width: 140px;
+  }
+
+  .answers-list {
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 1rem;
+    border-top: 1px solid #f8bbd0;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--color-primary);
+  }
+
+  .answer-entry {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ffe0ec;
+  }
+
+  .answer-entry strong {
+    color: var(--color-accent);
+    text-shadow:
+      0 1px 3px rgba(214, 51, 108, 0.3);
+  }
+
+  #thank-you-section p, #answers-section h2 {
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    color: var(--color-primary);
+    margin: 0 0 1rem 0;
+    text-align: center;
+    text-shadow:
+      0 1px 6px rgba(214, 51, 108, 0.25);
+  }
+
+  /* Accessibility */
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0,0,0,0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  /* Responsive */
+  @media (max-width: 560px) {
+    main {
+      padding: 2rem 2rem 3rem;
+    }
+    h1 {
+      font-size: 2.25rem;
+    }
+    .button-group {
+      flex-direction: column;
+    }
+    button {
+      flex: none;
+      width: 100%;
+    }
+    .answer-buttons {
+      flex-direction: column;
+    }
+    .answer-buttons button {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+<main role="main" aria-label="Permainan Truth or Dare Romantis">
+  <h1>Truth or Dare</h1>
+  <p class="subtitle">Pilih Truth atau Dare, jawab dengan jujur, dan rasakan kehangatan cinta kita 💖</p>
+
+  <section id="choice-section" aria-label="Pilih truth atau dare">
+    <div class="button-group">
+      <button id="truth-btn" aria-describedby="truth-desc" type="button">Truth</button>
+      <button id="dare-btn" aria-describedby="dare-desc" type="button">Dare</button>
+      <a href="game.html"><button>⬅️ Back</button></a>
+    </div>
+    <p id="truth-desc" class="visually-hidden">Ajukan pertanyaan truth (kebenaran)</p>
+    <p id="dare-desc" class="visually-hidden">Ajukan tantangan dare (berani)</p>
+  </section>
+
+  <section id="question-section" class="question-section" style="display:none" aria-live="polite" aria-atomic="true">
+    <p class="question-text" id="question-text"></p>
+    <form id="answer-form" autocomplete="off">
+      <label for="answer-input" class="visually-hidden">Jawaban kamu</label>
+      <textarea id="answer-input" name="answer" placeholder="Tuliskan jawabanmu di sini..." required aria-required="true" spellcheck="true"></textarea>
+      <div class="answer-buttons">
+        <button type="submit" id="submit-answer-btn">Kirim Jawaban</button>
+        <button type="button" id="cancel-btn" class="secondary">Batal</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="thank-you-section" style="display:none" aria-live="polite" aria-atomic="true">
+    <p>Terima kasih atas jawabanmu! Lanjutkan permainan atau lihat semua jawaban yang tersimpan.</p>
+    <div class="button-group">
+      <button id="play-again-btn" class="secondary" type="button">Main Lagi</button>
+      <button id="view-answers-btn" class="secondary" type="button">Lihat Jawaban</button>
+    </div>
+  </section>
+
+  <section id="answers-section" style="display:none" aria-live="polite" aria-atomic="false">
+    <h2>Jawaban Terinput</h2>
+    <div class="answers-list" id="answers-list" tabindex="0" aria-label="Daftar jawaban yang sudah diberikan"></div>
+    <button id="close-answers-btn" class="secondary" style="margin-top:1rem;" type="button">Tutup Jawaban</button>
+  </section>
+</main>
+
+<script>
+  (function(){
+    // Daftar pertanyaan/pilihan Truth dan Dare bernuansa romantis dan personal
+    const truths = [
+      "Apa hal pertama yang kamu rasakan saat bertemu aku?",
+      "Apa hal kecil yang aku lakukan yang membuatmu jatuh cinta?",
+      "Sebutkan satu momen saat kita bersama yang membuat hatimu tenang.",
+      "Apa impian terindah yang ingin kita capai bersama?",
+      "Apa perasaan paling tulus yang kamu simpan untukku?",
+      "Cerita lucu atau manis apa yang selalu kamu ingat tentang kita berdua?",
+      "Apa hal sederhana yang ingin kamu lakukan denganku lebih sering?",
+      "Jika kamu bisa memberi aku hadiah apapun, apa yang kamu pilih dan kenapa?",
+      "Kalau kamu bisa menggambarkan aku dengan satu kata penuh cinta, apa itu?",
+      "Apa harapan terbesarmu untuk hubungan kita ke depan?"
+    ];
+
+    const dares = [
+      "Kirim suara manismu menyebut namaku saat ini.",
+      "Buat video singkat kamu tersenyum dan kirim sekarang.",
+      "Katakan satu frase cinta padaku dengan penuh perasaan.",
+      "Tantang aku melakukan sesuatu yang menyenangkan minggu ini.",
+      "Kirim pesan khusus yang bisa membuatku tersenyum sepanjang hari.",
+      "Berikan aku pujian spesial yang belum pernah kamu katakan.",
+      "Buat aku tertawa dengan cerita konyolmu sekarang juga.",
+      "Rekam dirimu membacakan satu baris puisi untukku.",
+      "Tunjukkan ekspresi wajah paling manismu dan kirimkan.",
+      "Janjikan satu hal manis yang ingin kamu lakukan untukku."
+    ];
+
+    let currentType = null;
+    let currentQuestion = null;
+    let answers = [];
+
+    const choiceSection = document.getElementById('choice-section');
+    const questionSection = document.getElementById('question-section');
+    const questionText = document.getElementById('question-text');
+    const answerForm = document.getElementById('answer-form');
+    const answerInput = document.getElementById('answer-input');
+    const thankYouSection = document.getElementById('thank-you-section');
+    const playAgainBtn = document.getElementById('play-again-btn');
+    const viewAnswersBtn = document.getElementById('view-answers-btn');
+    const answersSection = document.getElementById('answers-section');
+    const answersList = document.getElementById('answers-list');
+    const closeAnswersBtn = document.getElementById('close-answers-btn');
+    const truthBtn = document.getElementById('truth-btn');
+    const dareBtn = document.getElementById('dare-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+
+    const STORAGE_KEY = 'truth-or-dare-romantis-answers';
+
+    function loadAnswers(){
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if(saved){
+          answers = JSON.parse(saved);
+        } else {
+          answers = [];
+        }
+      } catch {
+        answers = [];
+      }
+    }
+
+    function saveAnswers(){
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(answers));
+      } catch {
+        // ignore error
+      }
+    }
+
+    function getRandomFrom(arr){
+      return arr[Math.floor(Math.random()*arr.length)];
+    }
+
+    function startQuestion(type){
+      currentType = type;
+      currentQuestion = type === 'truth' ? getRandomFrom(truths) : getRandomFrom(dares);
+      questionText.textContent = currentQuestion;
+      answerInput.value = '';
+      choiceSection.style.display = 'none';
+      questionSection.style.display = 'flex';
+      thankYouSection.style.display = 'none';
+      answersSection.style.display = 'none';
+      answerInput.focus();
+    }
+
+    function showThankYou(){
+      questionSection.style.display = 'none';
+      thankYouSection.style.display = 'flex';
+      choiceSection.style.display = 'none';
+      answersSection.style.display = 'none';
+      playAgainBtn.focus();
+    }
+
+    function showChoices(){
+      choiceSection.style.display = 'block';
+      questionSection.style.display = 'none';
+      thankYouSection.style.display = 'none';
+      answersSection.style.display = 'none';
+      truthBtn.focus();
+    }
+
+    function showAnswers(){
+      answersSection.style.display = 'block';
+      thankYouSection.style.display = 'none';
+      choiceSection.style.display = 'none';
+      questionSection.style.display = 'none';
+
+      answersList.innerHTML = '';
+
+      if (answers.length === 0) {
+        answersList.textContent = 'Belum ada jawaban yang dikirim.';
+      } else {
+        answers.forEach((entry, i) => {
+          const div = document.createElement('div');
+          div.className = 'answer-entry';
+          const questionEsc = entry.question.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          const answerEsc = entry.answer.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          div.innerHTML = `<strong>#${i+1} (${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)}):</strong> ${questionEsc}<br><i>Jawaban:</i> ${answerEsc}`;
+          answersList.appendChild(div);
+        });
+      }
+      closeAnswersBtn.focus();
+    }
+
+    truthBtn.addEventListener('click', () => startQuestion('truth'));
+    dareBtn.addEventListener('click', () => startQuestion('dare'));
+    cancelBtn.addEventListener('click', () => {
+      showChoices();
+    });
+
+    answerForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const ans = answerInput.value.trim();
+      if(ans === '') return;
+      answers.push({
+        type: currentType,
+        question: currentQuestion,
+        answer: ans,
+        timestamp: new Date().toISOString()
+      });
+      saveAnswers();
+      showThankYou();
+    });
+
+    playAgainBtn.addEventListener('click', () => {
+      showChoices();
+    });
+
+    viewAnswersBtn.addEventListener('click', () => {
+      showAnswers();
+    });
+
+    closeAnswersBtn.addEventListener('click', () => {
+      showChoices();
+    });
+
+    loadAnswers();
+    showChoices();
+  })();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="shortcut icon" href="../flowers-for-someone-main/images/gift.png" type="image/x-icon">
+<title>Gallery Kenangan Bersama Dia</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+
+  :root {
+    --primary-color: #e75480;
+    --secondary-color: #f6c1c0;
+    --background-color: #fff0f5;
+    --text-color: #4b2e3b;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background: linear-gradient(to bottom right, #ff6f91, #ff3e6c); /* Romantic gradient background */
+    color: var(--text-color);
+  }
+
+  header {
+    text-align: center;
+    padding: 3rem 1rem 2rem 1rem;
+  }
+
+  header h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    letter-spacing: 2px;
+    color: var(--primary-color);
+    text-shadow: 1px 1px 3px rgba(231, 84, 128, 0.5);
+  }
+
+  header p {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--text-color);
+    opacity: 0.8;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+    gap: 1rem;
+    padding: 1rem 2rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .gallery-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 8px 15px rgba(231, 84, 128, 0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gallery-item:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 15px 25px rgba(231, 84, 128, 0.4);
+    z-index: 10;
+  }
+
+  .gallery-item::before {
+    content: "";
+    display: block;
+    padding-top: 75%; /* ratio 4:3 (height/width * 100%) */
+  }
+
+  .gallery-item img {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    pointer-events: none;
+  }
+
+  .caption {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    background: linear-gradient(0deg, rgba(231,84,128,0.85) 0%, rgba(231,84,128,0) 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    text-shadow: 1px 1px 2px #821a44;
+    user-select: none;
+    pointer-events: none;
+    border-radius: 0 0 12px 12px;
+  }
+
+  /* Modal styles */
+  #modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right:0;
+    bottom: 0;
+    background: rgba(75, 46, 59, 0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    z-index: 100;
+  }
+
+  #modal.active {
+    display: flex;
+  }
+
+  #modal-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(231, 84, 128, 0.6);
+    animation: popin 0.3s ease forwards;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @keyframes popin {
+    0% {
+      transform: scale(0.7);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  #modal-content img {
+    flex-grow: 1;
+    width: auto;
+    max-width: 90vw;
+    min-height: 0;
+    object-fit: contain;
+    border-bottom: 1px solid #eee;
+    display: block;
+    transition: transform 0.3s ease; /* Smooth zoom transition */
+  }
+
+  #modal-caption {
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    text-align: center;
+    background: #fff0f5;
+    user-select:none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #modal-close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.8rem;
+    background: var(--primary-color);
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 600;
+    border-radius: 50%;
+    width: 2.8rem;
+    height: 2.8rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(231,84,128,0.7);
+    transition: background-color 0.3s ease;
+  }
+
+  #modal-close:hover {
+    background: #c83e63;
+  }
+
+  /* Navigation arrows */
+  #modal-prev, #modal-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(231, 84, 128, 0.75);
+    border: none;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 900;
+    border-radius: 50%;
+    width: 3.5rem;
+    height: 3.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(231,84,128,0.7);
+    user-select:none;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 101;
+    line-height: 1; /* Added for vertical centering */
+    font-family: 'Poppins', sans-serif; /* ensure font */
+  }
+  #modal-prev:hover, #modal-next:hover {
+    background: rgba(200, 40, 80, 0.9);
+  }
+  #modal-prev {
+    left: 0.8rem;
+  }
+  #modal-next {
+    right: 0.8rem;
+  }
+
+  /* Responsive text scaling */
+  @media (max-width: 480px) {
+    header h1 {
+      font-size: 2.2rem;
+    }
+    header p {
+      font-size: 1rem;
+    }
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  #BackBtn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #ff6f91;
+    color: white;
+    font-size: 1em;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-bottom: 40px;
+  }
+
+  #BackBtn:hover {
+    background-color: #ff3e6c;
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Capture The Moments</h1>
+  <p>Gallery Indah Bersamamu</p>
+</header>
+
+<section class="gallery" aria-label="Gallery Kenangan Bersama Dia">
+  <article class="gallery-item" tabindex="0" aria-describedby="caption1" data-caption="Firs Timme Foto Bareng, That's So Cuteeee >_< 💝" data-img="../images/Cute.jpg">
+    <img src="../images/Cute.jpg" alt="LMay 26, 2025" />
+    <div class="caption" id="caption1">May 26, 2025</div>
+  </article>
+  <article class="gallery-item" tabindex="0" aria-describedby="caption2" data-caption="I Think This Is Cute Too." data-img="../images/we.jpg">
+    <img src="../images/we.jpg" alt="I Think This Is Cute Too." />
+    <div class="caption" id="caption2">May 26, 2025</div>
+  </article>
+  <article class="gallery-item" tabindex="0" aria-describedby="caption3" data-caption="Lihat ini sangat lucu bukan?" data-img="../images/Syifa1.jpg">
+    <img src="../images/Syifa1.jpg" alt="Lihat ini sangat lucu bukan?" />
+    <div class="caption" id="caption3">May 15, 2025</div>
+  </article>
+  <article class="gallery-item" tabindex="0" aria-describedby="caption4" data-caption="Look At That. You're so pretty <3" data-img="../images/Syifa2.jpg">
+    <img src="../images/Syifa2.jpg" alt="Look At That. You're so pretty <3" />
+    <div class="caption" id="caption4">May 15, 2025</div>
+  </article>
+  <article class="gallery-item" tabindex="0" aria-describedby="caption5" data-caption="I'm so cool right? Hahaaa 😁" data-img="../images/Me.jpg">
+    <img src="../images/Me.jpg" alt="I'm so cool right? Hahaaa 😁" />
+    <div class="caption" id="caption5">June 11, 2024</div>
+  </article>
+  <article class="gallery-item" tabindex="0" aria-describedby="caption6" data-caption="😮✌🏻" data-img="../images/Me2.jpg">
+    <img src="../images/Me2.jpg" alt="😮✌🏻" />
+    <div class="caption" id="caption6">June 11, 2024</div>
+  </article>
+  <article class="gallery-item" tabindex="0" aria-describedby="caption7" data-caption="Rawrrr 🦖" data-img="../images/Syifa3.jpg">
+    <img src="../images/Syifa3.jpg" alt="Rawrrr 🦖" />
+    <div class="caption" id="caption7">May 24, 2025</div>
+  </article>
+  <article class="gallery-item" tabindex="0" aria-describedby="caption8" data-caption="This is my favorite flowers 💐" data-img="../images/Syifa4.jpg">
+    <img src="../images/Syifa4.jpg" alt="This is my favorite flowers 💐" />
+    <div class="caption" id="caption8">May 22, 2025</div>
+  </article>
+</section>
+
+<!-- Modal structure -->
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-caption" tabindex="-1">
+  <div id="modal-content">
+    <button id="modal-close" aria-label="Tutup">&times;</button>
+    <button id="modal-prev" aria-label="Gambar sebelumnya">&#8249;</button>
+    <img id="modal-image" src="" alt="" />
+    <button id="modal-next" aria-label="Gambar berikutnya">&#8250;</button>
+    <div id="modal-caption"></div>
+  </div>
+</div>
+
+<script>
+  const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
+  const modal = document.getElementById('modal');
+  const modalImage = document.getElementById('modal-image');
+  const modalCaption = document.getElementById('modal-caption');
+  const modalClose = document.getElementById('modal-close');
+  const modalPrev = document.getElementById('modal-prev');
+  const modalNext = document.getElementById('modal-next');
+
+  let currentIndex = -1;
+  let scale = 1; // Initial scale for zoom
+
+  function showImage(index) {
+    if (index < 0) {
+      index = galleryItems.length - 1;
+    } else if (index >= galleryItems.length) {
+      index = 0;
+    }
+    currentIndex = index;
+    const item = galleryItems[currentIndex];
+    const imgSrc = item.getAttribute('data-img');
+    const caption = item.getAttribute('data-caption');
+    modalImage.src = imgSrc;
+    modalImage.alt = caption;
+    modalCaption.textContent = caption;
+    modal.classList.add('active');
+    modal.focus();
+    scale = 1; // Reset scale when a new image is shown
+    modalImage.style.transform = 'scale(1)'; // Reset zoom
+    modalImage.style.transformOrigin = 'center center'; // Reset transform origin
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    modalImage.src = '';
+    modalCaption.textContent = '';
+    currentIndex = -1;
+    scale = 1; // Reset scale
+    modalImage.style.transform = 'scale(1)'; // Reset zoom
+  }
+
+  function showPrev() {
+    if (currentIndex !== -1) {
+      showImage(currentIndex - 1);
+    }
+  }
+
+  function showNext() {
+    if (currentIndex !== -1) {
+      showImage(currentIndex + 1);
+    }
+  }
+
+  // Mouse wheel zoom
+  modalImage.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const rect = modalImage.getBoundingClientRect();
+    const x = e.clientX - rect.left; // Get mouse x position relative to the image
+    const y = e.clientY - rect.top; // Get mouse y position relative to the image
+    const mouseXPercent = x / rect.width; // Calculate x percentage
+    const mouseYPercent = y / rect.height; // Calculate y percentage
+
+    // Set transform origin based on mouse position
+    modalImage.style.transformOrigin = `${mouseXPercent * 100}% ${mouseYPercent * 100}%`;
+
+    if (e.deltaY < 0) {
+      scale *= 1.1; // Zoom in
+    } else {
+      scale /= 1.1; // Zoom out
+    }
+    modalImage.style.transform = `scale(${scale})`;
+  });
+
+  // Click to zoom in/out
+  modalImage.addEventListener('click', () => {
+    if (scale === 1) {
+      scale = 2; // Zoom in
+    } else {
+      scale = 1; // Reset to original size
+    }
+    modalImage.style.transform = `scale(${scale})`;
+  });
+
+  // Touch zoom
+  let initialDistance = null;
+
+  modalImage.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      initialDistance = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+    }
+  });
+
+  modalImage.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2 && initialDistance) {
+      const currentDistance = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      scale *= currentDistance / initialDistance; // Adjust scale based on pinch
+      modalImage.style.transform = `scale(${scale})`;
+      initialDistance = currentDistance; // Update initial distance
+    }
+  });
+
+  modalImage.addEventListener('touchend', () => {
+    initialDistance = null; // Reset initial distance
+  });
+
+  galleryItems.forEach((item, index) => {
+    item.addEventListener('click', () => showImage(index));
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        showImage(index);
+      }
+    });
+  });
+
+  modalClose.addEventListener('click', closeModal);
+
+  modalPrev.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showPrev();
+  });
+
+  modalNext.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showNext();
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Keyboard navigation for modal
+  document.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('active')) return;
+
+    if (e.key === 'Escape') {
+      closeModal();
+    } else if (e.key === 'ArrowLeft') {
+      showPrev();
+      e.preventDefault();
+    } else if (e.key === 'ArrowRight') {
+      showNext();
+      e.preventDefault();
+    }
+  });
+</script>
+<div class="button-container">
+    <a href="main.html"><button id="BackBtn">⬅️ Back</button></a>
+</div>
+</body>
+</html>

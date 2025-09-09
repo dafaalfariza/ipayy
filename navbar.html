@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Animated Nav List</title>
+  <link rel="stylesheet" href="navbar.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+</head>
+<body>
+
+  <button class="menu-toggle" aria-label="Toggle navigation">
+    <span class="hamburger"></span>
+  </button>
+
+  <nav class="nav-list hidden">
+    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+    <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+    <a href="#"><i class="fas fa-globe"></i> Website</a>
+    <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+    <a href="#"><i class="fab fa-telegram"></i> Telegram</a>
+    <a href="#"><i class="fas fa-coffee"></i> Buy me a Coffee</a>
+  </nav>
+
+  <script>
+  const toggleBtn = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.nav-list');
+
+  toggleBtn.addEventListener('click', () => {
+    nav.classList.toggle('hidden');
+    toggleBtn.classList.toggle('open');
+  });
+
+  // Klik di luar sidebar untuk menutup
+  document.addEventListener('click', (e) => {
+    if (!nav.contains(e.target) && !toggleBtn.contains(e.target)) {
+      nav.classList.add('hidden');
+      toggleBtn.classList.remove('open');
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="shortcut icon" href="../flowers-for-someone-main/images/gift.png" type="image/x-icon">
+  <title>Favorit Aku dan Dia</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #ffd6e0, #ffe6f7);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow: auto;
+    }
+
+    /* Animasi hati jatuh */
+    .hearts {
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      color: rgba(255, 105, 180, 0.3);
+      font-size: 30px;
+      animation: fall 6s linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+      }
+    }
+
+    .profile-pics {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .profile-pics img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border: 4px solid white;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 800px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+      z-index: 1;
+      background-color: white;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      text-align: center;
+      border: 1px solid #eee;
+      transition: background-color 0.3s;
+    }
+
+    thead th {
+      background-color: #f78fb3;
+      color: white;
+      font-size: 22px;
+    }
+
+    td:nth-child(1) {
+      background-color: #d0ebff;
+    }
+
+    td:nth-child(2) {
+      background-color: #f1f1f1;
+      font-weight: bold;
+    }
+
+    td:nth-child(3) {
+      background-color: #ffc0cb;
+    }
+
+    tr:hover td:nth-child(1) {
+      background-color: #a5d8ff;
+    }
+
+    tr:hover td:nth-child(2) {
+      background-color: #d6d6d6;
+    }
+
+    tr:hover td:nth-child(3) {
+      background-color: #ff99aa;
+    }
+
+    .love-note {
+      margin-top: 40px;
+      font-size: 18px;
+      max-width: 700px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
+      text-align: center;
+    }
+
+    audio {
+      margin-top: 20px;
+    }
+
+    #BackBtn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ff6f91;
+  color: white;
+  font-size: 1em;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 30px;
+  z-index: 2;
+  position: relative;
+  transition: background 0.3s;
+  text-align: center;
+}
+#BackBtn:hover {
+  background-color: #ff3e6c;
+}
+  </style>
+
+</head>
+<body>
+
+  <!-- Hati jatuh -->
+  <div class="hearts">
+    <div class="heart" style="left: 10%; animation-delay: 0s;">💖</div>
+    <div class="heart" style="left: 30%; animation-delay: 1s;">💕</div>
+    <div class="heart" style="left: 50%; animation-delay: 2s;">💗</div>
+    <div class="heart" style="left: 70%; animation-delay: 3s;">💘</div>
+    <div class="heart" style="left: 90%; animation-delay: 4s;">❤️</div>
+  </div>
+
+  <!-- Foto Aku dan Dia -->
+  <div class="profile-pics">
+    <img src="https://via.placeholder.com/130x130.png?text=Aku" alt="Foto Aku">
+    <img src="https://via.placeholder.com/130x130.png?text=Dia" alt="Foto Dia">
+  </div>
+
+  <!-- Tabel -->
+  <table>
+    <thead>
+      <tr>
+        <th>Aku</th>
+        <th>Jenis / Kategori</th>
+        <th>Kamu</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>7 Maret 2009</td>
+        <td>Tanggal Lahir</td>
+        <td>10 September 2009</td>
+      </tr>
+      <tr>
+        <td>Nasi Goreng</td>
+        <td>Makanan</td>
+        <td>Mie Ayam</td>
+      </tr>
+      <tr>
+        <td>Kopi</td>
+        <td>Minuman</td>
+        <td>Kopi</td>
+      </tr>
+      <tr>
+        <td>"If I Could Be A Constellation" - Kessoku Band</td>
+        <td>Lagu</td>
+        <td>"About You" - The 1975</td>
+      </tr>
+      <tr>
+        <td>Kucing</td>
+        <td>Hewan Favorit</td>
+        <td>Kucing</td>
+      </tr>
+      <tr>
+        <td>Ngoding, Dengerin Musik</td>
+        <td>Hobi</td>
+        <td>Dengerin Musik, Nyanyi</td>
+      </tr>
+      <tr>
+        <td>Syifa Audrey Syahfitri Saragih</td>
+        <td>Yang Disukai</td>
+        <td>Dafa Alfariza Harahap</td>
+      </tr>
+      <tr>
+        <td>Biru</td>
+        <td>Warna</td>
+        <td>Pink</td>
+      </tr>
+    </tbody>
+  </table>
+
+<!-- Lagu Latar -->
+<audio controls autoplay loop>
+  <source src="../song/The 1975 - About You (Official).mp3" type="audio/mp3">
+  Browser kamu tidak mendukung audio.
+</audio>
+
+
+
+  <!-- Surat cinta -->
+  <div class="love-note">
+    Terima kasih sudah hadir dalam hidupku. <br />
+    Meskipun kita berbeda, tapi justru perbedaan itulah yang membuat kita saling melengkapi. <br />
+    Semoga hal-hal kecil ini terus mengingatkan kita betapa berharganya satu sama lain. 💖
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    Dibuat dengan penuh cinta oleh [Dafa Alfariza Harahap] untuk [Syifa Audrey Syahfitri Saragih] 💘
+  </footer>
+  <a href="main.html"><button id="BackBtn">⬅️ Back</button></a>
+</body>
+</html>

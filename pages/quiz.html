@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="shortcut icon" href="../flowers-for-someone-main/images/gift.png" type="image/x-icon">
+<title>Kuis Untuk Kamu 🎉 - Level Terkunci</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ffe6f0, #ffd1dc);
+    background-size: cover;
+    background-position: center;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+    min-height: 100vh;
+    margin: 0;
+  }
+  h1 {
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+  }
+  #levelButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  .level-box {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff6f91;
+    border-radius: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+  }
+  .locked {
+    background-color: #555;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  .active {
+    background-color: #ff6f91;
+  }
+  .level-box:hover:not(.locked) {
+    background-color: #ff3e6c;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  }
+  .quiz-container {
+    display: none;
+    margin-top: 20px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  .quiz-question {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  #quizOptions {
+    display: flex;
+    flex-direction: column;
+  }
+  #quizOptions button {
+    margin: 5px 0;
+    padding: 10px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff6f91;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  #quizOptions button:hover {
+    background-color: #ff3e6c;
+    transform: scale(1.02);
+  }
+  .correct {
+    background-color: #4caf50 !important;
+  }
+  .incorrect {
+    background-color: #f44336 !important;
+  }
+  .quiz-feedback {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  #hasilContainer {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  #hasilContainer h2 {
+    margin-bottom: 10px;
+  }
+
+  #backBtn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff6f91;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+  }
+  #backBtn:hover {
+    background-color: #ff3e6c;
+  }
+
+  #nextLevelBtn, #ulangLevelBtn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff6f91;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+  }
+  #nextLevelBtn:hover, #ulangLevelBtn:hover {
+    background-color: #ff3e6c;
+  }
+</style>
+</head>
+<body>
+
+<h1>Kuis Untuk Kamu 🎉 - Level Terkunci</h1>
+<div id="levelButtons"></div>
+      <button id="backBtn"><link rel="stylesheet" href="game.html">⬅️ back</button>
+
+<div class="quiz-container" id="quizContainer">
+  <div class="quiz-question" id="quizQuestion"></div>
+  <div id="quizOptions"></div>
+  <div class="quiz-feedback" id="quizFeedback"></div>
+  <div id="hasilContainer" style="display:none;">
+    <h2>Hasil</h2>
+    <p id="hasilBenar"></p>
+    <p id="hasilPersen"></p>
+    <div>
+      <button id="nextLevelBtn" style="display:none;">Lanjut ke Level Berikutnya</button>
+      <button id="ulangLevelBtn">Ulang Level Ini</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const levelButtonsContainer = document.getElementById('levelButtons');
+const quizContainer = document.getElementById('quizContainer');
+const quizQuestion = document.getElementById('quizQuestion');
+const quizOptionsDiv = document.getElementById('quizOptions');
+const quizFeedback = document.getElementById('quizFeedback');
+const hasilContainer = document.getElementById('hasilContainer');
+const hasilBenar = document.getElementById('hasilBenar');
+const hasilPersen = document.getElementById('hasilPersen');
+const nextLevelBtn = document.getElementById('nextLevelBtn');
+const ulangLevelBtn = document.getElementById('ulangLevelBtn');
+
+const totalLevels = 10;
+let currentLevel = null;
+let currentQuestions = [];
+let currentQuestionIndex = 0;
+let correctCount = 0;
+
+document.getElementById("backBtn").addEventListener("click", function() {
+      // Pindah ke halaman lain (contohnya ke 'pesan.html')
+      window.location.href = "../pages/game.html";
+    });
+
+// Status level: apakah selesai 100%
+let levelStatus = Array(totalLevels + 1).fill(false); // index 1 sampai 10
+
+// Data soal per level dengan jawaban bisa array untuk beberapa jawaban benar
+const questionsPerLevel = {
+  1: [
+    {
+      question: "Apa warna favorit aku?",
+      options: ["A. Merah", "B. Biru", "C. Hitam", "D. Cokelat"],
+      answer: ["B"] // Dua jawaban benar
+    },
+    {
+      question: "Apa makanan kesukaan aku?",
+      options: ["A. Mie Ayam", "B. Bakso", "C. Nasi Goreng", "D. Rendang"],
+      answer: ["C"]
+    },
+    {
+      question: "Apa hewan favorit aku?",
+      options: ["A. Kelinci", "B. Kucing", "C. Burung", "D. Rusa"],
+      answer: ["B"]
+    }
+  ],
+  2: [
+    {
+      question: "Bulan apa kita mulai dekat?",
+      options: ["A. November 2024", "B. Desember 2024", "C. Januari 2025", "D. Februari 2025"],
+      answer: ["D"]
+    },
+    {
+      question: "Panggilan apa yang kamu berikan kepada-ku waktu itu?",
+      options: ["A. Dafa", "B. Dapa", "C. Dadap", "D. Pari"],
+      answer: ["C"]
+    },
+    {
+      question: "Kapan kamu menyebut nama itu pertama kali?",
+      options: ["A. 23 Februari 2025", "B. 24 Februari 2025", "C. 25 Februari 2025", "D. 26 Februari 2025"],
+      answer: ["D"]
+    }
+  ],
+  3: [
+    {
+      question: "Apa hobi aku?",
+      options: ["A. Ngoding", "B. Nyanyi/Dengerin Musik", "C. Tidur", "D. Semua Benar"],
+      answer: ["D"]
+    },
+    {
+      question: "Siapakah nama lengkap aku?",
+      options: ["A. Dafa Alfarizi Harahap", "B. Dapa Alparizi Harahap", "C. Dafa Alfariza Harahap", "D. Dafa Alpariza Harahap"],
+      answer: ["C"]
+    },
+    {
+      question: "Apa Minuman Favorit aku?",
+      options: ["A. Kopi", "B. Teh", "C. Susu", "D. Boba"],
+      answer: ["A"]
+    }
+  ],
+  4: [
+    {
+      question: "Kalau kita berantem, apa yang aku lakukan?",
+      options: ["A. Ngajak berantem lagi", "B. Ga bicara denganmu", "C. Ceritakan semuanya baik-baik", "D. Menghilang"],
+      answer: ["C"]
+    },
+    {
+      question: "Kalau aku ga enak hati, apa yang aku butuhkan?",
+      options: ["A. Pelukan", "B. Pat-pat B", "C. Tangan kamu", "D. Jambak rambutku"],
+      answer: ["A"]
+    },
+    {
+      question: "Apakah aku suka manja ke kamu?",
+      options: ["A. Engga", "B. Iyaa"],
+      answer: ["B"]
+    }
+  ],
+  5: [
+    {
+      question: "Apa yang aku lakukan saat kamu buat aku salting?",
+      options: ["A. Salto", "B. Tutup muka", "C. Tremor", "D. Rasanya mau terbang"],
+      answer: ["B", "C", "D"]
+    },
+    {
+      question: "Apa yang gaboleh sering-sering kamu lakukan?",
+      options: ["A. Minum jelly-jelly", "B. Makan yang banyak saosnya", "C. Ngobrol denganku", "D. Semua Salah"],
+      answer: ["A", "B"]
+    },
+    {
+      question: "Kapan kita pertama kali foto bareng?",
+      options: ["A. 26 Mei 2025", "B. 27 Mei 2025", "C. 28 Mei 2025", "D. 29 Mei 2025"],
+      answer: ["A"]
+    }
+  ],
+  6: [
+    {
+      question: "Siapa nama kucing aku yang berwarna orange?",
+      options: ["A. Agus", "B. Elle v2.0", "C Zoro", "D. Elle"],
+      answer: ["B"]
+    },
+    {
+      question: "Apa yang aku lakukan saat malas?",
+      options: ["A. Tidur", "B. Makan", "C. Nonton TV", "D. Lompat"],
+      answer: ["A"]
+    },
+    {
+      question: "Apa yang bikin aku senang dan bahagia?",
+      options: ["A. Jalan sama kamu", "B. Cerita sama kamu", "C. Ngechat kamu", "D. Calling kamu"],
+      answer: ["A", "B", "C", "D"]
+    }
+  ],
+  7: [
+    {
+      question: "Sifat apa yang aku suka dari kamu?",
+      options: ["A. Rajin", "B. Baik", "C. Pintar", "D. Semua benar"],
+      answer: ["D"]
+    },
+    {
+      question: "Siapa yang suka ngeselin?",
+      options: ["A. Dafa", "B. Syifa"],
+      answer: ["A"]
+    },
+    {
+      question: "Apakah aku lucuk?",
+      options: ["A. Iya", "B. Iyaa", "C. Tentu!", "D. Yoiii"],
+      answer: ["A", "B", "C", "D"]
+    }
+  ],
+  8: [
+    {
+      question: "Apa yang aku lakukan saat kesepian?",
+      options: ["A. Chat Sama Kamu", "B. Pengen sama kamu", "C. Call sama kamu", "D. Semua benar"],
+      answer: ["D"]
+    },
+    {
+      question: "Anime favorit aku?",
+      options: ["A. Naruto", "B. Haikyu!!", "C. Yumemiru Danshi Wa Genjitsushugisha", "D. Tenki No Ko"],
+      answer: ["C"]
+    },
+    {
+      question: "Dimana aku menonton anime?",
+      options: ["A. Youtube", "B. AnimeLovers", "C. OtakuDesu", "D. BiliBili"],
+      answer: ["C"]
+    }
+  ],
+  9: [
+    {
+      question: "Tanggal lahir aku kapan?",
+      options: ["A. 17 Maret 2009", "B. 7 Maret 2009", "C. 21 Maret 2009", "D. 5 Maret 2009"],
+      answer: ["B"]
+    },
+    {
+      question: "Apa nama kontak kamu di hp aku?",
+      options: ["A. Sayaangkuu", "B. Bubub 💝", "C. istrikuuuu 🤍", "D. Si Cantiikk"],
+      answer: ["C"]
+    },
+    {
+      question: "Size baju aku?",
+      options: ["A. S", "B. M", "C. L", "D. XL"],
+      answer: ["C"]
+    }
+  ],
+  10: [
+    {
+      question: "Siapakah atlet basket yang menjadi favorit aku?",
+      options: ["A. Stephen Curry", "B. Kobe Bryant", "C. Lebron James", "D. Michael Jordan"],
+      answer: ["A"]
+    },
+    {
+      question: "What sport do i like??",
+      options: ["A. Basketball", "B. Football", "C. Chess", "D. Semua benar"],
+      answer: ["D"]
+    },
+    {
+      question: "Mengapa aku sangat menyayangimu?",
+      options: ["A. Kamu sangat spesial di hatiku", "B. Kamu selalu mengabariku", "C. Kita memiliki tujuan yang sama", "D. Kamu benar-benar tulus mencintaiku"],
+      answer: ["A", "B", "C", "D"]
+    }
+  ]
+};
+
+// Membuat tombol level
+function createLevelButtons() {
+  levelButtonsContainer.innerHTML = '';
+  for (let i=1; i<=totalLevels; i++) {
+    const btn = document.createElement('div');
+    btn.className = 'level-box';
+
+    if (i > 1 && !levelStatus[i - 1]) {
+      btn.className += ' locked';
+      btn.setAttribute('disabled', true);
+    }
+
+    btn.textContent = `Level ${i}`;
+    btn.dataset.level = i;
+
+    btn.onclick = () => {
+      if (!btn.classList.contains('locked') && !btn.hasAttribute('disabled')) {
+        startLevel(i);
+      }
+    };
+    levelButtonsContainer.appendChild(btn);
+  }
+}
+createLevelButtons();
+
+function startLevel(level) {
+  currentLevel = level;
+  currentQuestions = questionsPerLevel[level];
+  currentQuestionIndex = 0;
+  correctCount = 0;
+  quizContainer.style.display = 'block';
+  hasilContainer.style.display = 'none';
+  loadQuestion();
+}
+
+function loadQuestion() {
+  if (currentQuestionIndex < currentQuestions.length) {
+    quizQuestion.textContent = currentQuestions[currentQuestionIndex].question;
+    quizFeedback.textContent = '';
+    quizOptionsDiv.innerHTML = '';
+    currentQuestions[currentQuestionIndex].options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.textContent = opt;
+      btn.dataset.answer = opt.charAt(0);
+      btn.onclick = () => checkAnswer(btn);
+      quizOptionsDiv.appendChild(btn);
+    });
+  } else {
+    showHasil();
+  }
+}
+
+function checkAnswer(btn) {
+  const correctAnswer = currentQuestions[currentQuestionIndex].answer;
+  const selectedAnswer = btn.dataset.answer;
+
+  // Check if the selected answer is in the array of correct answers
+  const isCorrect = Array.isArray(correctAnswer) ? correctAnswer.includes(selectedAnswer) : selectedAnswer === correctAnswer;
+
+  if (isCorrect) {
+    quizFeedback.textContent = "Jawaban benar! 🎉";
+    btn.classList.add('correct');
+    correctCount++;
+  } else {
+    const correctDisplay = Array.isArray(correctAnswer) ? correctAnswer.join(", ") : correctAnswer;
+    quizFeedback.textContent = `Jawaban salah. Jawaban yang benar: ${correctDisplay}`;
+    btn.classList.add('incorrect');
+  }
+
+  Array.from(quizOptionsDiv.children).forEach(b => b.disabled = true);
+  setTimeout(() => {
+    currentQuestionIndex++;
+    loadQuestion();
+  }, 1500);
+}
+
+function showHasil() {
+  hasilBenar.textContent = `Benar: ${correctCount} dari ${currentQuestions.length}`;
+  const persen = (correctCount / currentQuestions.length) * 100;
+  hasilPersen.textContent = `Persentase: ${persen.toFixed(2)}%`;
+  hasilContainer.style.display = 'block';
+
+  if (correctCount === currentQuestions.length && !levelStatus[currentLevel]) {
+    levelStatus[currentLevel] = true;
+    updateLevelButtons();
+  }
+
+  if (currentLevel < totalLevels && levelStatus[currentLevel]) {
+    nextLevelBtn.style.display = 'inline-block';
+  } else {
+    nextLevelBtn.style.display = 'none';
+  }
+
+  ulangLevelBtn.style.display = 'inline-block';
+
+  nextLevelBtn.onclick = () => {
+    const nextLvl = currentLevel + 1;
+    const btnNext = document.querySelector(`div[data-level="${nextLvl}"]`);
+    if (btnNext && btnNext.classList.contains('locked')) {
+      btnNext.classList.remove('locked');
+      btnNext.removeAttribute('disabled');
+      btnNext.style.cursor = 'pointer';
+    }
+    resetQuiz();
+  };
+
+  ulangLevelBtn.onclick = () => {
+    resetQuiz();
+  };
+}
+
+function updateLevelButtons() {
+  const buttons = document.querySelectorAll('.level-box');
+  buttons.forEach(btn => {
+    const lvl = parseInt(btn.dataset.level);
+    if (lvl > 1 && !levelStatus[lvl - 1]) {
+      btn.className = 'level-box locked';
+      btn.setAttribute('disabled', true);
+      btn.style.cursor = 'not-allowed';
+    } else {
+      btn.className = 'level-box';
+      btn.removeAttribute('disabled');
+      btn.style.cursor = 'pointer';
+    }
+  });
+}
+
+function resetQuiz() {
+  quizContainer.style.display = 'none';
+}
+</script>
+
+</body>
+</html>

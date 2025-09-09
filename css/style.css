@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300&display=swap');
+
+/* --- Body dan Background --- */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  text-align: center;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #f9c5d1, #9795ef);
+  animation: bgShift 10s ease-in-out infinite alternate;
+  position: relative;
+}
+
+@keyframes bgShift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* --- Container Utama --- */
+.container {
+  padding: 50px 20px 120px;
+  z-index: 1;
+  position: relative;
+}
+
+/* --- Judul Ulang Tahun --- */
+h1 {
+  font-size: 3em;
+  font-family: 'Great Vibes', cursive;
+  color: #fff8f0;
+  margin-bottom: 20px;
+  animation: popin 1s ease-out;
+  text-shadow: 2px 2px 4px #ff91a4;
+}
+
+/* --- Teks Pesan --- */
+.message p {
+  font-size: 1.3em;
+  white-space: pre-wrap;
+  margin: 20px auto;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+/* --- Tombol Musik --- */
+#musicBtn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ff6f91;
+  color: white;
+  font-size: 1em;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 30px;
+  z-index: 2;
+  position: relative;
+  transition: background 0.3s;
+}
+#musicBtn:hover {
+  background-color: #ff3e6c;
+}
+
+/* --- Tombol Pesan --- */
+#pesanBtn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ff6f91;
+  color: white;
+  font-size: 1em;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 30px;
+  z-index: 2;
+  position: relative;
+  transition: background 0.3s;
+}
+#pesanBtn:hover {
+  background-color: #ff3e6c;
+}
+
+/* --- Tombol About We --- */
+#weBtn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ff6f91;
+  color: white;
+  font-size: 1em;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 30px;
+  z-index: 2;
+  position: relative;
+  transition: background 0.3s;
+}
+#weBtn:hover {
+  background-color: #ff3e6c;
+}
+
+/* --- Tombol For You --- */
+#ForUBtn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ff6f91;
+  color: white;
+  font-size: 1em;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 20px;
+  z-index: 2;
+  position: relative;
+  transition: background 0.3s;
+}
+#ForUBtn:hover {
+  background-color: #ff3e6c;
+}
+
+/* --- Tombol Gallery --- */
+#galleryBtn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ff6f91;
+  color: white;
+  font-size: 1em;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 30px;
+  z-index: 2;
+  position: relative;
+  transition: background 0.3s;
+}
+#galleryBtn:hover {
+  background-color: #ff3e6c;
+}
+
+/* --- Tombol Game --- */
+#gameBtn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ff6f91;
+  color: white;
+  font-size: 1em;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 30px;
+  z-index: 2;
+  position: relative;
+  transition: background 0.3s;
+}
+#gameBtn:hover {
+  background-color: #ff3e6c;
+}
+
+/* --- Gambar Cewek --- */
+.foto-ultah {
+  max-width: 35%;
+  border-radius: 20px;
+  margin: 30px auto 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* --- Efek Judul Muncul --- */
+@keyframes popin {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* --- Kanvas Konfeti --- */
+canvas#confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* --- Hiasan Emoji Cinta Mengambang --- */
+body::before {
+  content: "💖 💕 💗 💓 💞";
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  animation: floatHearts 4s infinite ease-in-out;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+@keyframes floatHearts {
+  0% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+/* --- Responsif di HP --- */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2.2em;
+  }
+
+  .message p {
+    font-size: 1.1em;
+    padding: 15px;
+  }
+
+  #musicBtn {
+    font-size: 0.9em;
+  }
+
+  #pesanBtn {
+    font-size: 0.9em;
+  }
+}

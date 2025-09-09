@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Happy Birthday Game!</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
+  :root {
+    --color-bg: #121212;
+    --color-primary: #ff6f91;
+    --color-secondary: #ffccf9;
+    --color-accent: #f72585;
+    --color-text-light: #fff;
+    --color-text-muted: #bbb;
+    --font-family: 'Poppins', sans-serif;
+
+    --balloon-size: 60px;
+    --game-width: 100%;
+    --game-height: 400px;
+
+    --transition-speed: 0.3s;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-family);
+    background: linear-gradient(135deg, #23074d, #cc5333);
+    color: var(--color-text-light);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2rem 1rem 3rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1 {
+    font-weight: 600;
+    font-size: 3rem;
+    margin-bottom: 0.25rem;
+    text-align: center;
+    text-shadow:
+      0 2px 6px rgba(0,0,0,0.6);
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+    color: var(--color-secondary);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    text-shadow:
+      0 1px 3px rgba(0,0,0,0.6);
+  }
+
+  .game-container {
+    width: var(--game-width);
+    max-width: 600px;
+    height: var(--game-height);
+    background: rgba(255 255 255 / 0.1);
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    position: relative;
+    user-select: none;
+    overflow: hidden;
+  }
+
+  .balloon {
+    width: var(--balloon-size);
+    height: var(--balloon-size);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background: var(--color-primary);
+    position: absolute;
+    cursor: pointer;
+    box-shadow:
+      inset -8px -10px 10px rgba(255 255 255 / 0.5),
+      inset 5px 10px 10px rgba(0 0 0 / 0.3),
+      0 4px 10px rgba(0 0 0 / 0.5);
+    transition:
+      transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow var(--transition-speed);
+  }
+  .balloon:hover {
+    transform: scale(1.1) translateY(-10px);
+    box-shadow:
+      inset -12px -14px 14px rgba(255 255 255 / 0.7),
+      inset 7px 14px 14px rgba(0 0 0 / 0.4),
+      0 6px 14px rgba(0 0 0 / 0.7);
+  }
+
+  .balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 6px;
+    height: 20px;
+    background: linear-gradient(135deg, #f72585, #ff6f91);
+    transform: translateX(-50%);
+    border-radius: 2px;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+  }
+
+  .scoreboard {
+    margin: 1rem 0;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--color-secondary);
+    user-select: none;
+    letter-spacing: 1px;
+  }
+
+  .timer {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  button#start-btn {
+    margin: 1rem auto 0;
+    display: block;
+    background: var(--color-accent);
+    border: none;
+    border-radius: 0.75rem;
+    color: var(--color-text-light);
+    font-weight: 600;
+    font-size: 1.25rem;
+    padding: 0.75rem 2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(247 37 133 / 0.7);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  button#start-btn:hover {
+    background: #ff4a96;
+    transform: scale(1.05);
+  }
+  button#start-btn:disabled {
+    background: #aa537f;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  button#backBtn {
+    margin: 1rem auto 0;
+    display: block;
+    background: var(--color-accent);
+    border: none;
+    border-radius: 0.75rem;
+    color: var(--color-text-light);
+    font-weight: 600;
+    font-size: 1.25rem;
+    padding: 0.75rem 2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(247 37 133 / 0.7);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  button#backBtn:hover {
+    background: #ff4a96;
+    transform: scale(1.05);
+  }
+  button#backBtn:disabled {
+    background: #aa537f;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .final-message {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+    text-align: center;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+  }
+</style>
+</head>
+<body>
+  <h1>Happy Birthday, Sweet Girl! 🎉</h1>
+  <p class="subtitle">Catch as many balloons as you can before time runs out!</p>
+
+  <div class="game-container" id="game-container" aria-label="Birthday balloon catching game">
+    <!-- balloons inserted here dynamically -->
+  </div>
+
+  <div class="scoreboard" aria-live="polite">
+    Score: <span id="score">0</span>
+  </div>
+  <div class="timer" aria-live="polite">
+    Time left: <span id="time-left">30</span> seconds
+  </div>
+  <button id="start-btn" aria-label="Start game button">Start Game</button>
+  <a href="game.html"><button id="backBtn" aria-label="Back">⬅️ Back</button></a>
+
+  <div class="final-message" id="final-message" role="alert" aria-live="assertive" style="display:none;"></div>
+
+<script>
+  const gameContainer = document.getElementById('game-container');
+  const scoreDisplay = document.getElementById('score');
+  const timeDisplay = document.getElementById('time-left');
+  const startBtn = document.getElementById('start-btn');
+  const finalMessage = document.getElementById('final-message');
+  let score = 0;
+  let timeLeft = 30; // seconds
+  let gameInterval = null;
+  let countdownInterval = null;
+  let balloons = [];
+  let gameActive = false;
+
+  function randomPosition(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+  function createBalloon() {
+    const balloon = document.createElement('div');
+    balloon.classList.add('balloon');
+    const maxX = gameContainer.clientWidth - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--balloon-size'));
+    const maxY = gameContainer.clientHeight - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--balloon-size'));
+    const x = randomPosition(maxX);
+    const y = randomPosition(maxY);
+    balloon.style.left = x + 'px';
+    balloon.style.top = y + 'px';
+
+    balloon.addEventListener('click', () => {
+      if (!gameActive) return;
+      score++;
+      scoreDisplay.textContent = score;
+      // Pop effect
+      balloon.style.transform = 'scale(0) rotate(20deg)';
+      balloon.style.opacity = '0';
+      balloon.style.pointerEvents = 'none';
+    });
+
+    gameContainer.appendChild(balloon);
+    balloons.push(balloon);
+
+    // Remove balloon after some time (1.5 sec)
+    setTimeout(() => {
+      if(balloon.parentElement) {
+        balloon.remove();
+        balloons = balloons.filter(b => b !== balloon);
+      }
+    }, 1500);
+  }
+
+  function clearBalloons() {
+    balloons.forEach(b => b.remove());
+    balloons = [];
+  }
+
+  function startGame() {
+    score = 0;
+    timeLeft = 30;
+    scoreDisplay.textContent = score;
+    timeDisplay.textContent = timeLeft;
+    finalMessage.style.display = 'none';
+    gameActive = true;
+    clearBalloons();
+
+    // Generate balloons every 700ms
+    gameInterval = setInterval(() => {
+      createBalloon();
+    }, 700);
+
+    // Countdown timer
+    countdownInterval = setInterval(() => {
+      timeLeft--;
+      timeDisplay.textContent = timeLeft;
+      if (timeLeft <= 0) {
+        endGame();
+      }
+    }, 1000);
+
+    startBtn.disabled = true;
+  }
+
+  function endGame() {
+    gameActive = false;
+    clearInterval(gameInterval);
+    clearInterval(countdownInterval);
+    clearBalloons();
+    startBtn.disabled = false;
+    finalMessage.style.display = 'block';
+    finalMessage.textContent = `🎂 Time's up! You caught ${score} balloon${score !== 1 ? 's' : ''}. Happy Birthday! 🎉`;
+  }
+
+  startBtn.addEventListener('click', startGame);
+</script>
+</body>
+</html>
